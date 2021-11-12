@@ -279,16 +279,31 @@ describe('Gradle build file parser', function() {
              repositories {
                 mavenCentral()
                 maven {
-                    url "http://test"
+                  url "http://test"
                 }
+                maven { url 'http://test1' }
+                maven { url "http://test2" }
              }
             */});
 
       var expected = {
         repositories: [
-            {type: 'unknown', data: {name: 'mavenCentral()'}},
-            {type: 'maven', data: {url: 'http://test'}}
-        ]
+          { type: 'unknown', data: { name: 'mavenCentral()' } },
+          {
+            type: 'maven',
+            data: [
+              {
+                url: 'http://test',
+              },
+              {
+                url: 'http://test1',
+              },
+              {
+                url: 'http://test2',
+              },
+            ],
+          },
+        ],
       };
       return parser.parseText(dsl).then(function(parsedValue) {
         expect(parsedValue).to.deep.equal(expected);

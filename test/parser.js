@@ -504,6 +504,9 @@ describe('Gradle build file parser', function() {
         }
         compile 'g1:a1:v1'
         compile group: 'g2', name: 'a2', version: 'v2'
+        compile (group: 'g3', name: 'a3', version: 'v3'){
+          exclude group: 'com.google.android.gms', module: 'play-services-location'
+        }
       }
       */});
 
@@ -550,6 +553,18 @@ describe('Gradle build file parser', function() {
             version: 'v2',
             type: 'compile',
             excludes: []
+          },
+          {
+            group: 'g3',
+            name: 'a3',
+            version: 'v3',
+            type: 'compile',
+            excludes: [
+              {
+                group: 'com.google.android.gms',
+                module: 'play-services-location'
+              }
+            ],
           }
         ]
       };
